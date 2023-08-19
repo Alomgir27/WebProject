@@ -1,0 +1,11 @@
+.travis.yml
+.gitattributes
+.gitignore
+.eslintrc.json
+.editorconfig
+yarn.lock
+test.js
+coverage
+.vscode
+tsconfig.json
+index.ts
