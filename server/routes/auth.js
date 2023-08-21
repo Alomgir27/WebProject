@@ -5,57 +5,6 @@ const crypto = require("crypto");
 
 const User  = require('../models/userModel');
 
-// var userSchema = new mongoose.Schema(
-//     {
-//       firstname: {
-//         type: String,
-//         required: true,
-//       },
-//       lastname: {
-//         type: String,
-//         required: true,
-//       },
-//       email: {
-//         type: String,
-//         required: true,
-//         unique: true,
-//       },
-//       mobile: {
-//         type: String,
-//         required: true,
-//         unique: true,
-//       },
-//       password: {
-//         type: String,
-//         required: true,
-//       },
-//       role: {
-//         type: String,
-//         default: "user",
-//       },
-//       isBlocked: {
-//         type: Boolean,
-//         default: false,
-//       },
-//       cart: {
-//         type: Array,
-//         default: [],
-//       },
-//       address: {
-//         type: String,
-//       },
-//       wishlist: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
-//       refreshToken: {
-//         type: String,
-//       },
-//       passwordChangedAt: Date,
-//       passwordResetToken: String,
-//       passwordResetExpires: Date,
-//     },
-//     {
-//       timestamps: true,
-//     }
-//   );
 
 //@Route Post api/users/register
 //@desc Register user
@@ -73,8 +22,8 @@ router.post('/register', async (req, res) => {
             password
         });
 
-        const salt = await bcrypt.genSaltSync(10);
-        newUser.password = await bcrypt.hash(newUser.password, salt);
+        // const salt = await bcrypt.genSaltSync(10);
+        // newUser.password = await bcrypt.hash(newUser.password, salt);
 
         await newUser.save();
 
@@ -109,7 +58,14 @@ router.post('/login', async (req, res) => {
             });
         }
 
+        if(user.role !== 'user') {
+            return res.status(400).json({
+                message: 'Invalid credentials'
+            });
+        }
+
         const isMatch = await bcrypt.compare(password, user.password);
+        console.log(isMatch);
 
         if (isMatch) {
             return res.status(200).json({
@@ -121,6 +77,34 @@ router.post('/login', async (req, res) => {
                 message: 'Invalid credentials'
             });
         }
+    } catch (error) {
+        console.error('Error during login:', error);
+        return res.status(500).json({
+            message: 'Something went wrong'
+        });
+    }
+});
+
+
+//@Route Get api/users/:id
+//@desc Get user by id
+//@access Public
+
+router.get('/:id', async (req, res) => {
+    const { id } = req.params;
+
+    
+    try {
+        const user = await User.findById(id);
+        if (!user) {
+            return res.status(400).json({
+                message: 'User not found'
+            });
+        }
+        return res.status(200).json({
+            message: 'User found',
+            user
+        });
     } catch (error) {
         console.error('Error during login:', error);
         return res.status(500).json({

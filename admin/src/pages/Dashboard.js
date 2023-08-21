@@ -1,7 +1,16 @@
-import React from "react";
+import React, {useEffect, useState } from "react";
 import { BsArrowDownRight, BsArrowUpRight } from "react-icons/bs";
 import { Column } from "@ant-design/plots";
 import { Table } from "antd";
+import { useNavigate } from "react-router-dom";
+import axios from 'axios'
+import { useDispatch, useSelector } from "react-redux";
+import { BiEdit } from "react-icons/bi";
+import { AiFillDelete } from "react-icons/ai";
+import { Link } from "react-router-dom";
+import { getOrders } from "../features/auth/authSlice";
+
+
 const columns = [
   {
     title: "SNo",
@@ -20,16 +29,59 @@ const columns = [
     dataIndex: "staus",
   },
 ];
-const data1 = [];
-for (let i = 0; i < 46; i++) {
-  data1.push({
-    key: i,
-    name: `Edward King ${i}`,
-    product: 32,
-    staus: `London, Park Lane no. ${i}`,
-  });
-}
+
+
 const Dashboard = () => {
+  const navigate = useNavigate();
+  const [user, setUser] = useState(null)
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getOrders());
+  }, []);
+  const orderState = useSelector((state) => state.auth.orders);
+  const data1 = [];
+  for (let i = 0; i < orderState.length; i++) {
+    data1.push({
+      key: i + 1,
+      name: orderState[i].orderby.firstname,
+      product: (
+        <Link to={`/admin/order/${orderState[i].orderby._id}`}>
+          View Orders
+        </Link>
+      ),
+      amount: orderState[i].paymentIntent.amount,
+      date: new Date(orderState[i].createdAt).toLocaleString(),
+      action: (
+        <>
+          <Link to="/" className=" fs-3 text-danger">
+            <BiEdit />
+          </Link>
+          <Link className="ms-3 fs-3 text-danger" to="/">
+            <AiFillDelete />
+          </Link>
+        </>
+      ),
+    });
+  }
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+      (async () => {
+        const {data} = await axios.get(`http://localhost:3000/api/user/${user?._id}`);
+        console.log(data);
+        setUser(data?.user);
+        localStorage.setItem("user", JSON.stringify(data?.user));
+      })();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!localStorage.getItem("user")){
+      navigate("/");
+    }
+  }, []);
+
   const data = [
     {
       type: "Jan",
@@ -116,23 +168,23 @@ const Dashboard = () => {
         <div className="d-flex justify-content-between align-items-end flex-grow-1 bg-white p-3 roudned-3">
           <div>
             <p className="desc">Total</p>
-            <h4 className="mb-0 sub-title">$1100</h4>
+            <h4 className="mb-0 sub-title">${(user?.amount || 0).toFixed(0) || 0} </h4>
           </div>
           <div className="d-flex flex-column align-items-end">
-            <h6>
-              <BsArrowDownRight /> 32%
-            </h6>
-            <p className="mb-0  desc">Compared To April 2022</p>
+            {/* <h6>
+              <BsArrowDownRight /> {Math.floor(Math.random() * 100)}%
+            </h6> */}
+            {/* <p className="mb-0  desc">{new Date().getFullYear()} Income</p> */}
           </div>
         </div>
-        <div className="d-flex justify-content-between align-items-end flex-grow-1 bg-white p-3 roudned-3">
+        {/* <div className="d-flex justify-content-between align-items-end flex-grow-1 bg-white p-3 roudned-3">
           <div>
             <p className="desc">Total</p>
-            <h4 className="mb-0 sub-title">$1100</h4>
+            <h4 className="mb-0 sub-title">${Math.floor(Math.random() * 1000)}</h4>
           </div>
           <div className="d-flex flex-column align-items-end">
             <h6 className="red">
-              <BsArrowDownRight /> 32%
+              <BsArrowDownRight /> {Math.floor(Math.random() * 100)}%
             </h6>
             <p className="mb-0  desc">Compared To April 2022</p>
           </div>
@@ -140,18 +192,18 @@ const Dashboard = () => {
         <div className="d-flex justify-content-between align-items-end flex-grow-1 bg-white p-3 roudned-3">
           <div>
             <p className="desc">Total</p>
-            <h4 className="mb-0 sub-title">$1100</h4>
+            <h4 className="mb-0 sub-title">$ {Math.floor(Math.random() * 1000)}</h4>
           </div>
           <div className="d-flex flex-column align-items-end">
             <h6 className="green">
-              <BsArrowDownRight /> 32%
+              <BsArrowDownRight /> {Math.floor(Math.random() * 100)}%
             </h6>
-            <p className="mb-0 desc">Compared To April 2022</p>
+            <p className="mb-0 desc">{new Date().getFullYear()} Income</p>
           </div>
-        </div>
+        </div> */}
       </div>
       <div className="mt-4">
-        <h3 className="mb-5 title">Income Statics</h3>
+        <h3 className="mb-5 title">Monthly Income</h3>
         <div>
           <Column {...config} />
         </div>

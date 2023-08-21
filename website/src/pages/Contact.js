@@ -64,34 +64,7 @@ const Contact = () => {
                   </div>
                 </form>
               </div>
-              <div>
-                <h3 className="contact-title mb-4">Get in touch with us</h3>
-                <div>
-                  <ul className="ps-0">
-                    <li className="mb-3 d-flex gap-15 align-items-center">
-                      <AiOutlineHome className="fs-5" />
-                      <address className="mb-0">
-                        Hno:277 , Near village chopal , Mandaura, Sonipat,
-                        Haryana
-                      </address>
-                    </li>
-                    <li className="mb-3 d-flex gap-15 align-items-center">
-                      <BiPhoneCall className="fs-5" />
-                      <a href="tel:+91 8264954234">+91 8264954234</a>
-                    </li>
-                    <li className="mb-3 d-flex gap-15 align-items-center">
-                      <AiOutlineMail className="fs-5" />
-                      <a href="mailto:navdeepdahiya753@gmail.com">
-                        navdeepdahiya753@gmail.com
-                      </a>
-                    </li>
-                    <li className="mb-3 d-flex gap-15 align-items-center">
-                      <BiInfoCircle className="fs-5" />
-                      <p className="mb-0">Monday – Friday 10 AM – 8 PM</p>
-                    </li>
-                  </ul>
-                </div>
-              </div>
+             
             </div>
           </div>
         </div>

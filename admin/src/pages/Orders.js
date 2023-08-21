@@ -41,7 +41,12 @@ const Orders = () => {
   const orderState = useSelector((state) => state.auth.orders);
 
   const data1 = [];
+  let map = new Map()
   for (let i = 0; i < orderState.length; i++) {
+    if(map.has(orderState[i].orderby._id)){
+      continue;
+    }
+    map.set(orderState[i].orderby._id, 1);
     data1.push({
       key: i + 1,
       name: orderState[i].orderby.firstname,

@@ -12,6 +12,7 @@ const OurStore = () => {
   const [grid, setGrid] = useState(4);
 
   const [products, setProducts] = useState([]);
+  const [option, setOption] = useState('')
   const [user, setUser] = useState(null);
   const [price, setPrice] = useState({
     pricelow: "",
@@ -230,17 +231,19 @@ const OurStore = () => {
                     defaultValue={"manula"}
                     className="form-control form-select"
                     id=""
+                    value={option}
+                    onChange={(e) => setOption(e.target.value)}
                   >
-                    <option value="manual">Featured</option>
-                    <option value="best-selling">Best selling</option>
-                    <option value="title-ascending">Alphabetically, A-Z</option>
-                    <option value="title-descending">
-                      Alphabetically, Z-A
-                    </option>
-                    <option value="price-ascending">Price, low to high</option>
-                    <option value="price-descending">Price, high to low</option>
-                    <option value="created-ascending">Date, old to new</option>
-                    <option value="created-descending">Date, new to old</option>
+                    <option value="">All</option>
+                    <option value="feature">Featured</option>
+                    <option value="special">Special</option>
+                    <option value="popular">Popular</option>
+                    <option value="a-z">A-Z</option>
+                    <option value="z-a">Z-A</option>
+                    <option value="low-high">Price Low to High</option>
+                    <option value="high-low">Price High to Low</option>
+
+                    
                   </select>
                 </div>
                 <div className="d-flex align-items-center gap-10">
@@ -285,7 +288,28 @@ const OurStore = () => {
             </div>
             <div className="products-list pb-5">
               <div className="d-flex gap-10 flex-wrap">
-                {products?.filter((item) => item?.price >= price.pricelow && item?.price <= price.pricehigh).map((item) => (
+                {option === "" && products?.filter((item) => item?.price >= price.pricelow && item?.price <= price.pricehigh).map((item) => (
+                  <ProductCard item={item} grid={grid} key={item._id} />
+                ))}
+                {option === "feature" && products?.filter((item) => item?.price >= price.pricelow && item?.price <= price.pricehigh && item?.tags === "featured").map((item) => (
+                  <ProductCard item={item} grid={grid} key={item._id} />
+                ))}
+                {option === "special" && products?.filter((item) => item?.price >= price.pricelow && item?.price <= price.pricehigh && item?.tags === "special").map((item) => (
+                  <ProductCard item={item} grid={grid} key={item._id} />
+                ))}
+                {option === "popular" && products?.filter((item) => item?.price >= price.pricelow && item?.price <= price.pricehigh && item?.tags === "popular").map((item) => (
+                  <ProductCard item={item} grid={grid} key={item._id} />
+                ))}
+                {option === "a-z" && products?.filter((item) => item?.price >= price.pricelow && item?.price <= price.pricehigh).sort((a, b) => a.title.localeCompare(b.title)).map((item) => (
+                  <ProductCard item={item} grid={grid} key={item._id} />
+                ))}
+                {option === "z-a" && products?.filter((item) => item?.price >= price.pricelow && item?.price <= price.pricehigh).sort((a, b) => b.title.localeCompare(a.title)).map((item) => (
+                  <ProductCard item={item} grid={grid} key={item._id} />
+                ))}
+                {option === "low-high" && products?.filter((item) => item?.price >= price.pricelow && item?.price <= price.pricehigh).sort((a, b) => a.price - b.price).map((item) => (
+                  <ProductCard item={item} grid={grid} key={item._id} />
+                ))}
+                {option === "high-low" && products?.filter((item) => item?.price >= price.pricelow && item?.price <= price.pricehigh).sort((a, b) => b.price - a.price).map((item) => (
                   <ProductCard item={item} grid={grid} key={item._id} />
                 ))}
               </div>

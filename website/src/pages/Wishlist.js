@@ -3,6 +3,7 @@ import BreadCrumb from "../components/BreadCrumb";
 import Meta from "../components/Meta";
 import Container from "../components/Container";
 import axios from "axios";
+import { toast } from 'react-toastify';
 
 const Wishlist = () => {
   const [user, setUser] = useState(null);
@@ -31,8 +32,11 @@ const Wishlist = () => {
     await axios.delete(`/api/wishlist/${user?._id}`, { data: { productId: id } })
       .then((res) => {
         console.log(res.data);
-        alert("Item Removed from Wishlist");
-        window.location.reload();
+        // alert("Item Removed from Wishlist");
+        toast.success("Item Removed from Wishlist.");
+        setTimeout(()=> {
+          window.location.reload();
+        }, 1000);
       })
       .catch((err) => {
         console.log(err);

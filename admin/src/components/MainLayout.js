@@ -179,7 +179,9 @@ const MainLayout = () => {
                     style={{ height: "auto", lineHeight: "20px" }}
                     to="/"
                   >
-                    Signout
+                    <button className="btn" onClick={() => localStorage.removeItem("user")}>
+                        Signout
+                    </button>
                   </Link>
                 </li>
               </div>

@@ -28,6 +28,7 @@ let schema = yup.object().shape({
   quantity: yup.number().required("Quantity is Required"),
 });
 
+
 const Addproduct = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -39,6 +40,8 @@ const Addproduct = () => {
     dispatch(getCategories());
     dispatch(getColors());
   }, []);
+
+ 
 
   const brandState = useSelector((state) => state.brand.brands);
   const catState = useSelector((state) => state.pCategory.pCategories);
@@ -84,6 +87,7 @@ const Addproduct = () => {
       color: "",
       quantity: "",
       images: "",
+      supplierId: "",
     },
     validationSchema: schema,
     onSubmit: (values) => {
@@ -95,6 +99,18 @@ const Addproduct = () => {
       }, 3000);
     },
   });
+  const [user, setUser] = useState(null);
+
+  useEffect(() => { 
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+      setUser(user)
+      console.log(user)
+      if(user?.role === 'supplier'){
+       formik.values.supplierId = user._id;
+      }
+    }
+  },[]);
   const handleColors = (e) => {
     setColor(e);
     console.log(color);
@@ -194,6 +210,7 @@ const Addproduct = () => {
             <option value="featured">Featured</option>
             <option value="popular">Popular</option>
             <option value="special">Special</option>
+            <option value="main">Main</option>
           </select>
           <div className="error">
             {formik.touched.tags && formik.errors.tags}

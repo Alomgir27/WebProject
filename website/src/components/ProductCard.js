@@ -9,6 +9,7 @@ import watch2 from "../images/watch-1.avif";
 import addcart from "../images/add-cart.svg";
 import view from "../images/view.svg";
 import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
 
 
 const ProductCard = ({ item, grid }) => {
@@ -31,14 +32,17 @@ const ProductCard = ({ item, grid }) => {
         .post("/api/wishlist", { productId: item?._id, userId: user?._id })
         .then((res) => {
           console.log(res.data);
-          alert("Added to Wishlist");
+          toast.success("Added to Wishlist");
+          
         })
         .catch((err) => {
           console.log(err);
-          alert(err.response.data);
+          // alert(err.response.data);
+          toast.error(err.response.data);
         });
     } else {
-      alert("Please Login to add to Wishlist");
+      // alert("Please Login to add to Wishlist");
+      toast.error("Please Login to add to Wishlist");
     }
   };
 

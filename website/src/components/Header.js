@@ -7,7 +7,7 @@ import user from "../images/user.svg";
 import cart from "../images/cart.svg";
 import menu from "../images/menu.svg";
 import axios from "axios";
-const Header = () => {
+const Header = ({search, setSearch}) => {
   const [couponData, setCouponData] = useState([]);
   const [user, setUser] = useState(null);
   const [cart, setCart] = useState([]);
@@ -23,14 +23,21 @@ const Header = () => {
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
-    if(user){
+    if (user) {
       setUser(user);
+      const fetchUser = async () => {
+        const { data } = await axios.get(`/api/user/${user?._id}`);
+        console.log(data);
+        setUser(data?.user);
+        localStorage.setItem("user", JSON.stringify(data?.user));
+      };
+      fetchUser();
+      
     }
-    
   }, []);
   
   useEffect(() => {
-    if(user){
+    if(user?._id){
       const fetchCart = async () => {
         const { data } = await axios.get(`/api/cart/${user?._id}`);
         console.log(data);
@@ -38,7 +45,7 @@ const Header = () => {
       };
       fetchCart();
     }
-  }, [user]);
+  }, [user?._id]);
 
 
   return (
@@ -58,7 +65,8 @@ const Header = () => {
               <div className="header-top-strip-links d-flex justify-content-end">
                 {user !== null ? (
                   <div className="d-flex align-items-center gap-15">
-                    <p className="text-white mb-0">Welcome {user?.firstname}</p>
+                    <p className="text-white mb-0">Welcome {user?.firstname}</p> <b className="text-white">|</b>
+                    <p className="text-white mb-0">${(user?.amount).toFixed(0)}</p>
                     <button className="btn btn-danger" onClick={() => {
                       localStorage.removeItem("user");
                       setUser(null);
@@ -83,7 +91,7 @@ const Header = () => {
             <div className="col-2">
               <h2>
                 <Link className="text-white" to="/">
-                  LOGO
+                  WART <span className="text-danger">SHOP</span>
                 </Link>
               </h2>
             </div>
@@ -95,6 +103,8 @@ const Header = () => {
                   placeholder="Search Product Here..."
                   aria-label="Search Product Here..."
                   aria-describedby="basic-addon2"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
                 />
                 <span className="input-group-text p-3" id="basic-addon2">
                   <BsSearch className="fs-6" />

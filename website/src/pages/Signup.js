@@ -6,6 +6,8 @@ import Container from "../components/Container";
 import CustomInput from "../components/CustomInput";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
 
 const Signup = () => {
 
@@ -24,7 +26,8 @@ const Signup = () => {
     await axios.post("/api/user/register", { name, email, mobile, password })
       .then((res) => {
         console.log(res.data);
-        alert("User Created Successfully");
+        // alert("User Created Successfully");
+        toast.success('User Created Successfully.');
         navigate("/login");
       })
       .catch((err) => {

@@ -135,6 +135,7 @@ const generateDummyProducts = async (imageUrls) => {
         images: [imageUrls[i]],
         color,
         tags,
+        supplierId: "64dfdb79c0552f9bfc88ca4d"
       };
       dummyProducts.push(product);
     }
@@ -146,7 +147,29 @@ const generateDummyProducts = async (imageUrls) => {
   } 
 };
 
+app.use("/test", async (req, res) => {
+  // console.log('hello')
+  // const products = await Product.find();
+  // products.map((item) => {
+  //   Product.findOneAndUpdate(
+  //     { _id: item._id },
+  //     {
+  //       $set: { supplierId: "64dfdb79c0552f9bfc88ca4d" },
+  //     },
+  //     { new: true }
+  //   ).exec();
 
+  //   // Product.findOneAndDelete(
+  //   //   { _id: item._id },
+  //   //   {
+  //   //     $set: { supllierId: undefined }
+  //   //   },
+  //   //   { new: true }
+  //   // ).exec();
+
+  // });
+  // res.send(products);
+});
 
 
 

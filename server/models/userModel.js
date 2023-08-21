@@ -42,6 +42,10 @@ var userSchema = new mongoose.Schema(
     refreshToken: {
       type: String,
     },
+    amount: {
+      type: Number,
+      default: 100000,
+    },
     passwordChangedAt: Date,
     passwordResetToken: String,
     passwordResetExpires: Date,

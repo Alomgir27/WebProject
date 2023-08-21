@@ -29,7 +29,7 @@ const SpecialProduct = ({item}) => {
               <p className="price">
                 <span className="red-p">{item?.price}</span>{" "}
               </p>
-              <div className="discount-till d-flex align-items-center gap-10">
+              {/* <div className="discount-till d-flex align-items-center gap-10">
                 <p className="mb-0">
                   <b>5 </b>days
                 </p>
@@ -38,7 +38,7 @@ const SpecialProduct = ({item}) => {
                   <span className="badge rounded-circle p-3 bg-danger">1</span>:
                   <span className="badge rounded-circle p-3 bg-danger">1</span>
                 </div>
-              </div>
+              </div> */}
               <div className="prod-count my-3">
                 <p>Products: {item?.quantity}</p>
                 <div className="progress">
@@ -52,7 +52,9 @@ const SpecialProduct = ({item}) => {
                   ></div>
                 </div>
               </div>
-              <Link className="button">Add to Cart</Link>
+              <Link className="button" to={`/product/${item?._id}`}>
+                View Product
+              </Link>
             </div>
           </div>
         </div>

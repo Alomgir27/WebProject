@@ -48,31 +48,33 @@ const ViewOrder = () => {
   useEffect(() => {
     dispatch(getOrderByUser(userId));
   }, []);
-  const orderState = useSelector((state) => state?.auth?.orderbyuser?.length > 0 && state?.auth?.orderbyuser[0]?.products);
-  // console.log(useSelector((state) => state.auth.orderbyuser));
+  const orderState = useSelector((state) => state?.auth?.orderbyuser);
+  console.log(useSelector((state) => state.auth.orderbyuser));
   // console.log(orderState)/;
   const data1 = [];
   if(orderState != undefined){
   for (let i = 0; i < orderState?.length; i++) {
-    data1.push({
-      key: i + 1,
-      name: orderState[i].product.title,
-      brand: orderState[i].product.brand,
-      count: orderState[i].count,
-      amount: orderState[i].product.price,
-      color: orderState[i].product.color,
-      date: orderState[i].product.createdAt,
-      action: (
-        <>
-          <Link to="/" className=" fs-3 text-danger">
-            <BiEdit />
-          </Link>
-          <Link className="ms-3 fs-3 text-danger" to="/">
-            <AiFillDelete />
-          </Link>
-        </>
-      ),
-    });
+    for (let j = 0; j < orderState[i].products.length; ++j){
+      data1.push({
+        key: i + 1,
+        name: orderState[i].products[j]?.product?.title,
+        brand: orderState[i].products[j]?.product?.brand,
+        count: orderState[i].products[j]?.count,
+        amount: orderState[i].products[j]?.product?.price,
+        color: orderState[i].products[j]?.product?.price,
+        date: orderState[i].products[j]?.product?.createdAt,
+        action: (
+          <>
+            <Link to="/" className=" fs-3 text-danger">
+              <BiEdit />
+            </Link>
+            <Link className="ms-3 fs-3 text-danger" to="/">
+              <AiFillDelete />
+            </Link>
+          </>
+        ),
+      });
+    }
   }
 }
   return (

@@ -123,6 +123,7 @@ const loginAdmin = asyncHandler(async (req, res) => {
       lastname: findAdmin?.lastname,
       email: findAdmin?.email,
       mobile: findAdmin?.mobile,
+      role: findAdmin?.role,
       token: generateToken(findAdmin?._id),
     });
   } else {

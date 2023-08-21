@@ -1,4 +1,4 @@
-import React from "react";
+import React , { useState } from "react";
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
@@ -21,13 +21,15 @@ import TermAndContions from "./pages/TermAndContions";
 import SingleProduct from "./pages/SingleProduct";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
+import { ToastContainer } from "react-toastify";
 function App() {
+  const [search, setSearch] = useState("");
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Home />} />
+          <Route path="/" element={<Layout search={search} setSearch={setSearch} />}>
+            <Route index element={<Home search={search} />} />
             <Route path="about" element={<About />} />
             <Route path="contact" element={<Contact />} />
             <Route path="product" element={<OurStore />} />
@@ -49,6 +51,7 @@ function App() {
           </Route>
         </Routes>
       </BrowserRouter>
+       <ToastContainer />
     </>
   );
 }

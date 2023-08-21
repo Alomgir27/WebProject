@@ -6,6 +6,7 @@ import Container from "../components/Container";
 import CustomInput from "../components/CustomInput";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -21,8 +22,12 @@ const Login = () => {
         console.log(res.data);
         localStorage.setItem("user", JSON.stringify(res.data?.user));
         // alert("Login Successfully");
+        toast.success("Login Successfully");
         navigate("/");
-        window.location.reload();
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+        
       })
       .catch((err) => {
         console.log(err);

@@ -9,7 +9,7 @@ import Container from "../components/Container";
 
 import axios from "axios";
 
-const Home = () => {
+const Home = ({ search }) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -50,7 +50,7 @@ const Home = () => {
                 <h4>{mainBanner[0]?.title}</h4>
                 <h5>{mainBanner[0]?.brand}</h5>
                 <p>{mainBanner[0]?.category}</p>
-                <Link className="button" to={`/product/${mainBanner[0]?._id}`}>
+                <Link className="button" to={`/product`}>
                   Shop Now
                 </Link>
               </div>
@@ -92,7 +92,10 @@ const Home = () => {
           </div>
         </div>
         <div className="col-12 row">
-          {products?.filter((i) => i.tags === "featured").map((product, index) => (
+          {search === "" && products?.filter((i) => i.tags === "featured").map((product, index) => (
+              <ProductCard item={product} key={index} />
+          ))}
+          {search !== "" && products?.filter((i) => i.tags === "featured").filter((i) => i.title.toLowerCase().includes(search.toLowerCase())).map((product, index) => (
               <ProductCard item={product} key={index} />
           ))}
           </div>
@@ -174,7 +177,10 @@ const Home = () => {
           </div>
         </div>
         <div className="row">
-          {products?.filter((i) => i.tags === "special").map((product, index) => (
+          {search === "" && products?.filter((i) => i.tags === "special").map((product, index) => (
+              <SpecialProduct item={product} key={index} />
+          ))}
+          {search !== "" && products?.filter((i) => i.tags === "special").filter((i) => i.title.toLowerCase().includes(search.toLowerCase())).map((product, index) => (
               <SpecialProduct item={product} key={index} />
           ))}
         </div>
@@ -222,7 +228,10 @@ const Home = () => {
           </div>
         </div>
         <div className="row">
-          {products?.filter((i) => i.tags === "popular").map((product, index) => (
+          {search === "" && products?.filter((i) => i.tags === "popular").map((product, index) => (
+              <ProductCard item={product} key={index} />
+          ))}
+          {search !== "" && products?.filter((i) => i.tags === "popular").filter((i) => i.title.toLowerCase().includes(search.toLowerCase())).map((product, index) => (
               <ProductCard item={product} key={index} />
           ))}
         </div>

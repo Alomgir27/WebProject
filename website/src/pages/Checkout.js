@@ -4,6 +4,7 @@ import { BiArrowBack } from "react-icons/bi";
 import watch from "../images/watch.jpg";
 import Container from "../components/Container";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import axios from "axios";
 
@@ -35,19 +36,28 @@ const Checkout = () => {
 
     const submitHandler = async (e) => {
       e.preventDefault();
+      if(!cart){
+        alert('No Item has cartList')
+        return;
+      }
       if(user?._id){
         await axios.post(`/api/order`, { userId: user?._id })
         .then((res) => {
           console.log(res.data);
-          alert("Order Placed");
+          // alert("Order Placed");
+          toast.success("Your Order has been placed");
           navigate("/");
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
         })
         .catch((err) => {
           console.log(err);
-          alert(err.response.data);
+          alert(err.message);
         });
       } else {
-        alert("Please Login to place order");
+        // alert("Please Login to place order");
+        toast.error("Please Login to place order");
       }
     };
 
@@ -91,35 +101,44 @@ const Checkout = () => {
               </nav>
               <h4 className="mb-3">Shipping Address</h4>
               <form
-                action=""
+                onSubmit={submitHandler}
                 className="d-flex gap-15 flex-wrap justify-content-between"
+
               >
                 <div className="w-100">
                   <select name="" className="form-control form-select" id="">
                     <option value="" selected disabled>
                       Select Country
                     </option>
+                    <option value={'bangladesh'}>bangladesh</option>
+                    <option value={'india'}>india</option>
+                    <option value={'pakistan'}>pakistan</option>
+                    <option value={'nepal'}>nepal</option>
+
                   </select>
                 </div>
                 <div className="flex-grow-1">
                   <input
                     type="text"
-                    placeholder="First Name"
+                    placeholder="Name"
                     className="form-control"
+                    required
                   />
                 </div>
-                <div className="flex-grow-1">
+                {/* <div className="flex-grow-1">
                   <input
                     type="text"
                     placeholder="Last Name"
                     className="form-control"
+                    required
                   />
-                </div>
+                </div> */}
                 <div className="w-100">
                   <input
                     type="text"
                     placeholder="Address"
                     className="form-control"
+                    required
                   />
                 </div>
                 <div className="w-100">
@@ -127,6 +146,7 @@ const Checkout = () => {
                     type="text"
                     placeholder="Apartment, Suite ,etc"
                     className="form-control"
+                    required
                   />
                 </div>
                 <div className="flex-grow-1">
@@ -134,6 +154,7 @@ const Checkout = () => {
                     type="text"
                     placeholder="City"
                     className="form-control"
+                    required
                   />
                 </div>
                 <div className="flex-grow-1">
@@ -141,6 +162,11 @@ const Checkout = () => {
                     <option value="" selected disabled>
                       Select State
                     </option>
+                    <option value={'dhaka'}>Dhaka</option>
+                    <option value={'Khulna'}>Khulna</option>
+                    <option value={'Barisal'}>Barisal</option>
+                    <option value={'Rajshahi'}>Rajshahi</option>
+                    <option value={'sylhet'}>Sylhet</option>
                   </select>
                 </div>
                 <div className="flex-grow-1">
@@ -148,6 +174,7 @@ const Checkout = () => {
                     type="text"
                     placeholder="Zipcode"
                     className="form-control"
+                    required
                   />
                 </div>
                 <div className="w-100">
@@ -156,7 +183,7 @@ const Checkout = () => {
                       <BiArrowBack className="me-2" />
                       Return to Cart
                     </Link>
-                    <button className="button" onClick={submitHandler}>
+                    <button className="button" type="submit">
                        Proceed to Order
                     </button>
                   </div>
@@ -167,7 +194,7 @@ const Checkout = () => {
           <div className="col-5">
             
             {cart?.products?.map((item, index) => (
-              <div className="border-bottom py-4">
+              <div className="border-bottom py-4" key={index}>
                 <div className="d-flex gap-10 mb-2 align-align-items-center">
                   <div className="w-75 d-flex gap-10">
                     <div className="w-25 position-relative">
@@ -201,7 +228,7 @@ const Checkout = () => {
               </div>
               <div className="d-flex justify-content-between align-items-center mt-2">
                 <p className="mb-0 total">Discount</p>
-                <p className="mb-0 total-price">{(cart?.cartTotal - cart?.totalAfterDiscount) / cart?.cartTotal * 100}%</p>
+                <p className="mb-0 total-price">{((cart?.cartTotal - cart?.totalAfterDiscount) / cart?.cartTotal * 100).toFixed(0)}%</p>
               </div>
             </div>
             <div className="d-flex justify-content-between align-items-center border-bootom py-4">

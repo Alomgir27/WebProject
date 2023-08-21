@@ -12,7 +12,7 @@ import Container from "../components/Container";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-
+import { toast } from "react-toastify";
 
 const SingleProduct = () => {
   const params = useParams();
@@ -76,14 +76,16 @@ const SingleProduct = () => {
         })
         .then((res) => {
           console.log(res.data);
-          alert("Added to Cart");
+          // alert("Added to Cart");
+          toast.success("Added to Cart");
         })
         .catch((err) => {
           console.log(err);
           alert(err.response.data);
         });
     } else {
-      alert("Please Login to add to Cart");
+      // alert("Please Login to add to Cart");
+      toast.error("Please Login to add to Cart");
     }
   }
 
@@ -179,27 +181,14 @@ const SingleProduct = () => {
                   <h3 className="product-heading">Availablity :</h3>
                   <p className="product-data">{product?.quantity}</p>
                 </div>
+                <div className="d-flex gap-10 flex-center my-2">
+                  <h3 className="product-heading">Sold : </h3>
+                  <p className="product-data">{product?.sold}</p>
+                </div>
                 {/* <div className="d-flex gap-10 flex-column mt-2 mb-3">
-                  <h3 className="product-heading">Size :</h3>
-                  <div className="d-flex flex-wrap gap-15">
-                    <span className="badge border border-1 bg-white text-dark border-secondary">
-                      S
-                    </span>
-                    <span className="badge border border-1 bg-white text-dark border-secondary">
-                      M
-                    </span>
-                    <span className="badge border border-1 bg-white text-dark border-secondary">
-                      XL
-                    </span>
-                    <span className="badge border border-1 bg-white text-dark border-secondary">
-                      XXL
-                    </span>
-                  </div>
-                </div> */}
-                <div className="d-flex gap-10 flex-column mt-2 mb-3">
                   <h3 className="product-heading">Color :</h3>
                   <Color />
-                </div>
+                </div> */}
                 <div className="d-flex align-items-center gap-15 flex-row mt-2 mb-3">
                   <h3 className="product-heading">Quantity : </h3>
                   <div className="">
@@ -213,6 +202,10 @@ const SingleProduct = () => {
                       id=""
                       value={quantity}
                       onChange={(e) => {
+                        if(e.target.value > product?.quantity){
+                          alert("Quantity is greater than available quantity");
+                          return;
+                        }
                         setQuantity(e.target.value);
                       }}
                     />
@@ -220,8 +213,6 @@ const SingleProduct = () => {
                   <div className="d-flex align-items-center gap-30 ms-5">
                     <button
                       className="button border-0"
-                      data-bs-toggle="modal"
-                      data-bs-target="#staticBackdrop"
                       type="button"
                       onClick={handleAddToCart}
                     >
@@ -230,7 +221,9 @@ const SingleProduct = () => {
                     <button
                       className="button signup"
                       type="button"
-                      onClick={() => navigate("/checkout")}
+                      data-bs-toggle="modal"
+                      data-bs-target="#staticBackdrop"
+                      onClick={() => {}}
                     >
                       Buy Now
                     </button>
