@@ -70,6 +70,7 @@ const Header = ({search, setSearch}) => {
                     <button className="btn btn-danger" onClick={() => {
                       localStorage.removeItem("user");
                       setUser(null);
+                      window.location.reload();
                     }
                     }>
                       Logout

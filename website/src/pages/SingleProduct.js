@@ -78,6 +78,10 @@ const SingleProduct = () => {
           console.log(res.data);
           // alert("Added to Cart");
           toast.success("Added to Cart");
+
+          setTimeout(() => {
+            navigate("/cart");
+          }, 1000);
         })
         .catch((err) => {
           console.log(err);

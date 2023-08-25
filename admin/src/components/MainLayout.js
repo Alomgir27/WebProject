@@ -40,8 +40,8 @@ const MainLayout = () => {
       <Sider trigger={null} collapsible collapsed={collapsed}>
         <div className="logo">
           <h2 className="text-white fs-5 text-center py-3 mb-0">
-            <span className="sm-logo">LW</span>
-            <span className="lg-logo">LOGO Wart</span>
+            <span className="sm-logo">WS</span>
+            <span className="lg-logo">WART SHOP</span>
           </h2>
         </div>
         <Menu
@@ -179,7 +179,13 @@ const MainLayout = () => {
                     style={{ height: "auto", lineHeight: "20px" }}
                     to="/"
                   >
-                    <button className="btn" onClick={() => localStorage.removeItem("user")}>
+                    <button className="btn" onClick={() => {
+                      localStorage.removeItem("user");
+                      setUser(null);
+                      navigate("/");
+                      window.location.reload();
+                    }
+                    }>
                         Signout
                     </button>
                   </Link>
